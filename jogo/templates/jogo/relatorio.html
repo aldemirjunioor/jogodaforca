@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Relatório de Jogos{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 20px;">📊 Relatório de Jogos</h2>
+
+<form method="get" style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 30px;">
+  <div style="display: flex; flex-direction: column; width: 100%; max-width: 400px;">
+    <label for="tema">Tema:</label>
+    <select name="tema" id="tema" class="campo-input">
+      <option value="">Todos</option>
+      {% for t in temas %}
+        <option value="{{ t.id }}" {% if request.GET.tema == t.id|stringformat:"s" %}selected{% endif %}>
+          {{ t.nome }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div style="display: flex; flex-direction: column; width: 100%; max-width: 400px;">
+    <label for="data_inicio">Data Início:</label>
+    <input type="date" name="data_inicio" value="{{ request.GET.data_inicio }}" class="campo-input">
+  </div>
+
+  <div style="display: flex; flex-direction: column; width: 100%; max-width: 400px;">
+    <label for="data_fim">Data Fim:</label>
+    <input type="date" name="data_fim" value="{{ request.GET.data_fim }}" class="campo-input">
+  </div>
+
+  <button type="submit" class="botao botao-azul">🔍 Filtrar</button>
+</form>
+
+{% if jogos %}
+<hr>
+<h3 style="margin-top: 30px;">📄 Resultados</h3>
+<table style="margin: 0 auto; width: 100%; max-width: 800px; border-collapse: collapse;">
+  <thead>
+    <tr style="background-color: #f0f0f0;">
+      <th style="padding: 8px; border: 1px solid #ddd;">Jogador</th>
+      <th style="padding: 8px; border: 1px solid #ddd;">Palavra</th>
+      <th style="padding: 8px; border: 1px solid #ddd;">Tema</th>
+      <th style="padding: 8px; border: 1px solid #ddd;">Data</th>
+      <th style="padding: 8px; border: 1px solid #ddd;">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for jogo in jogos %}
+    <tr>
+      <td style="padding: 8px; border: 1px solid #ddd;">{% if jogo.jogador %}{{ jogo.jogador.username }}{% else %}Anônimo{% endif %}</td>
+      <td style="padding: 8px; border: 1px solid #ddd;">{{ jogo.palavra.texto }}</td>
+      <td style="padding: 8px; border: 1px solid #ddd;">{{ jogo.palavra.tema.nome }}</td>
+      <td style="padding: 8px; border: 1px solid #ddd;">{{ jogo.data|date:"d/m/Y H:i" }}</td>
+      <td style="padding: 8px; border: 1px solid #ddd;">{{ jogo.status|title }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<form method="get" action="{% url 'relatorio_pdf' %}" style="margin-top: 25px;">
+  <input type="hidden" name="tema" value="{{ request.GET.tema }}">
+  <input type="hidden" name="data_inicio" value="{{ request.GET.data_inicio }}">
+  <input type="hidden" name="data_fim" value="{{ request.GET.data_fim }}">
+  <button type="submit" class="botao botao-cinza">⬇️ Baixar PDF</button>
+</form>
+{% else %}
+  <p style="margin-top: 30px;">❌ Nenhum jogo encontrado para os filtros selecionados.</p>
+{% endif %}
+{% endblock %}

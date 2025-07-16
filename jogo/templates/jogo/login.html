@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Entrar no Sistema{% endblock %}
+
+{% block content %}
+  <div style="background-color: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 400px; margin: auto;">
+    <h1 style="margin-bottom: 25px;">🔐 Entrar no Sistema</h1>
+    <form method="post">
+      {% csrf_token %}
+      <div style="margin-bottom: 15px; text-align: left;">
+        <label for="id_username"><strong>Usuário:</strong></label><br>
+        <input type="text" name="username" id="id_username" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+      </div>
+      <div style="margin-bottom: 25px; text-align: left;">
+        <label for="id_password"><strong>Senha:</strong></label><br>
+        <input type="password" name="password" id="id_password" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+      </div>
+      <button type="submit" class="botao botao-azul">🔓 Entrar</button>
+    </form>
+    <p style="margin-top: 20px;">Não tem uma conta?
+      <a href="{% url 'registro' %}" class="botao botao-cinza" style="display: inline-block; margin-top: 10px;">➕ Registre-se</a>
+    </p>
+  </div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Temas cadastrados{% endblock %}
+
+{% block content %}
+  <h2>📚 Temas Cadastrados</h2>
+
+  <a href="{% url 'novo_tema' %}" class="botao botao-azul">+ Novo Tema</a>
+
+  {% if temas %}
+    <table style="margin: 20px auto; width: 100%; max-width: 600px; border-collapse: collapse;">
+      <thead>
+        <tr style="background-color: #f0f0f0;">
+          <th style="padding: 12px; border: 1px solid #ccc;">Nome</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tema in temas %}
+        <tr>
+          <td style="padding: 10px; border: 1px solid #ccc;">{{ tema.nome }}</td>
+          <td style="padding: 10px; border: 1px solid #ccc;">
+            <a href="{% url 'editar_tema' tema.pk %}" class="botao botao-cinza" style="display:inline-block; width:auto; padding:6px 12px;">Editar</a>
+            <a href="{% url 'excluir_tema' tema.pk %}" class="botao botao-cinza" style="display:inline-block; width:auto; padding:6px 12px;">Excluir</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="margin-top: 30px;">Nenhum tema cadastrado ainda.</p>
+  {% endif %}
+{% endblock %}

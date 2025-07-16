@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Painel do Professor{% endblock %}
+
+{% block content %}
+  <section>
+    <h2>🎓 Bem-vindo, Professor {{ request.user.username }}</h2>
+    <p>Escolha uma das opções abaixo:</p>
+
+    <div class="botoes botoes-verticais">
+      <a href="{% url 'temas' %}" class="botao botao-azul">📚 Temas</a>
+      <a href="{% url 'palavras' %}" class="botao botao-azul">🧩 Palavras</a>
+      <a href="{% url 'relatorio' %}" class="botao botao-azul">📊 Relatórios</a>
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+  {% csrf_token %}
+  <button type="submit" class="botao botao-cinza">🚪 Sair</button>
+</form>
+    </div>
+  </section>
+{% endblock %}

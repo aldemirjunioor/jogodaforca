@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {% if object %}Editar Palavra{% else %}Nova Palavra{% endif %}
+{% endblock %}
+
+{% block content %}
+<section style="max-width: 600px; margin: 30px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+  <h2 style="margin-bottom: 20px;">
+    {% if object %}✏️ Editar Palavra{% else %}➕ Nova Palavra{% endif %}
+  </h2>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+
+      {% for field in form %}
+        <label for="{{ field.id_for_label }}" style="font-weight: bold;">
+          {{ field.label }}{% if field.field.required %} *{% endif %}
+        </label>
+        {{ field }}
+
+        {% if field.errors %}
+          <div style="color: red; font-size: 0.9em;">{{ field.errors|striptags }}</div>
+        {% endif %}
+      {% endfor %}
+
+    </div>
+
+    <div style="margin-top: 30px; display: flex; gap: 10px;">
+      <button type="submit" class="botao botao-azul" style="flex: 1;">
+        {% if object %}Salvar Alterações{% else %}Cadastrar Palavra{% endif %}
+      </button>
+      <a href="{% url 'palavras' %}" class="botao botao-cinza" style="flex: 1; text-align: center; line-height: 35px;">
+        Cancelar
+      </a>
+    </div>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+  <h2>📝 {{ titulo }}</h2>
+
+  <form method="post" style="margin-top: 30px;">
+    {% csrf_token %}
+
+    <label for="id_nome">Nome do Tema:</label>
+    {{ form.nome|add_class:"campo-input" }}
+
+    <div class="botoes" style="margin-top: 30px;">
+      <button type="submit" class="botao botao-azul">💾 Salvar</button>
+      <a href="{% url 'temas' %}" class="botao botao-cinza">❌ Cancelar</a>
+    </div>
+  </form>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Palavras Cadastradas{% endblock %}
+
+{% block content %}
+<section>
+  <h2>📚 Palavras</h2>
+
+  <a href="{% url 'nova_palavra' %}" class="botao botao-azul" style="margin-bottom: 20px; display: inline-block;">+ Nova Palavra</a>
+
+  {% if palavras %}
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr style="background-color: #f0f0f0;">
+            <th style="padding: 12px; border: 1px solid #ddd;">Texto</th>
+            <th style="padding: 12px; border: 1px solid #ddd;">Dica</th>
+            <th style="padding: 12px; border: 1px solid #ddd;">Tema</th>
+            <th style="padding: 12px; border: 1px solid #ddd; width: 160px;">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for palavra in palavras %}
+            <tr>
+              <td style="padding: 10px; border: 1px solid #ddd;">{{ palavra.texto }}</td>
+              <td style="padding: 10px; border: 1px solid #ddd;">{{ palavra.dica }}</td>
+              <td style="padding: 10px; border: 1px solid #ddd;">{{ palavra.tema.nome }}</td>
+              <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                <a href="{% url 'editar_palavra' palavra.pk %}" class="botao botao-cinza" style="margin-right: 8px; padding: 6px 10px;">Editar</a>
+                <a href="{% url 'excluir_palavra' palavra.pk %}" class="botao botao-vermelho" style="padding: 6px 10px;">Excluir</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p style="margin-top: 30px;">⚠️ Nenhuma palavra cadastrada ainda.</p>
+  {% endif %}
+</section>
+{% endblock %}

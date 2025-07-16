@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Bem-vindo ao Jogo da Forca{% endblock %}
+
+{% block content %}
+  <h1>🎯 Bem-vindo ao Jogo da Forca</h1>
+  <p>Escolha como deseja jogar:</p>
+
+  <div class="botoes">
+    <a href="{% url 'selecionar_jogo' %}" class="botao botao-azul">🎮 Jogar como Visitante</a>
+    <a href="{% url 'login' %}" class="botao botao-cinza">🔐 Entrar</a>
+    <a href="{% url 'registro' %}" class="botao botao-cinza">📝 Criar Conta</a>
+  </div>
+{% endblock %}

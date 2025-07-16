@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir palavra{% endblock %}
+
+{% block content %}
+<section>
+  <h2 style="margin-bottom: 20px;">🗑️ Confirmar exclusão</h2>
+  <p style="font-size: 18px;">
+    Tem certeza que deseja excluir a palavra <strong>"{{ object.texto }}"</strong>?
+  </p>
+
+  <form method="post" style="margin-top: 30px;">
+    {% csrf_token %}
+    <div style="display: flex; justify-content: center; flex-direction: column; align-items: center; gap: 10px;">
+      <button type="submit" class="botao botao-azul">Excluir</button>
+      <a href="{% url 'palavras' %}" class="botao botao-cinza">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

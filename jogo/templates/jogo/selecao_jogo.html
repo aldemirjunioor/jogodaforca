@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Selecione o Tema para Jogar{% endblock %}
+
+{% block content %}
+<section class="container" style="max-width: 600px; margin: auto; text-align: center;">
+  <h2 style="margin-bottom: 20px;">🎯 Selecione um Tema</h2>
+
+  {% if temas %}
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      {% for tema in temas %}
+        <a href="{% url 'jogo_forca' tema.pk %}"
+           style="display: block;
+                  padding: 12px 20px;
+                  border-radius: 8px;
+                  background-color: #007bff;
+                  color: white;
+                  text-decoration: none;
+                  font-weight: bold;
+                  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+                  transition: background-color 0.3s;">
+          {{ tema.nome }}
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p style="color: #888; margin-top: 20px;">🚫 Nenhum tema disponível para jogar.</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir Tema{% endblock %}
+
+{% block content %}
+  <h2>🗑️ Confirmar Exclusão</h2>
+
+  <p style="font-size: 18px; margin-top: 20px;">
+    Tem certeza de que deseja excluir o tema <strong>"{{ object.nome }}"</strong>?
+  </p>
+
+  <form method="post" style="margin-top: 30px;">
+    {% csrf_token %}
+
+    <div class="botoes">
+      <button type="submit" class="botao botao-azul">✅ Sim, excluir</button>
+      <a href="{% url 'temas' %}" class="botao botao-cinza">❌ Cancelar</a>
+    </div>
+  </form>
+{% endblock %}

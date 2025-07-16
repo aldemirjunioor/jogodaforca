@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Jogo da Forca</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      margin: 40px;
+      background-color: #f7f7f7;
+    }
+
+    h1 { margin-bottom: 10px; }
+
+    .palavra {
+      font-size: 36px;
+      letter-spacing: 10px;
+      margin: 20px 0;
+    }
+
+    .mensagem {
+      font-size: 22px;
+      margin-top: 30px;
+    }
+
+    .emoji {
+      font-size: 40px;
+      margin-top: 10px;
+      animation: bounce 1s infinite;
+    }
+
+    .emoji-derrota { animation: shake 0.6s infinite; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
+    .revelada {
+      color: darkred;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .teclado {
+      margin-top: 30px;
+    }
+
+    .linha {
+      margin-bottom: 10px;
+    }
+
+    .teclado button {
+      width: 45px;
+      height: 45px;
+      margin: 3px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background-color: #ffffff;
+      cursor: pointer;
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+      transition: 0.2s;
+    }
+
+    .teclado button:hover {
+      background-color: #e0e0e0;
+    }
+
+    .teclado button:disabled {
+      background-color: #ddd;
+      cursor: not-allowed;
+    }
+
+    .botoes-finais {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .btn-jogo, .link-jogo {
+      width: 180px;
+      height: 45px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+      transition: 0.2s;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .btn-jogo {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-jogo:hover {
+      background-color: #0056b3;
+    }
+
+    .link-jogo {
+      width: 180px;
+      height: 45px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+      background-color: #6c757d;
+      color: white;
+      text-decoration: none;
+      transition: 0.2s;
+      white-space: nowrap;
+      padding: 0 12px;
+      overflow: hidden;
+    }
+
+    .link-jogo:hover {
+      background-color: #495057;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎯 Jogo da Forca</h1>
+  <p><strong>Tema:</strong> {{ tema }}</p>
+  <p><strong>Dica:</strong> {{ dica }}</p>
+
+  <div class="palavra">{{ palavra_mostrada }}</div>
+  <p>Erros: {{ jogo.erros|length }} / {{ max_erros }}</p>
+
+  {% if status == 'jogando' %}
+    <form method="post">
+      {% csrf_token %}
+      <div class="teclado">
+        <div class="linha">
+          {% for letra in "QWERTYUIOP" %}
+            <button type="submit" name="letra" value="{{ letra }}"
+              {% if letra|lower in jogo.acertos or letra|lower in jogo.erros %}disabled{% endif %}>
+              {{ letra }}
+            </button>
+          {% endfor %}
+        </div>
+        <div class="linha">
+          {% for letra in "ASDFGHJKL" %}
+            <button type="submit" name="letra" value="{{ letra }}"
+              {% if letra|lower in jogo.acertos or letra|lower in jogo.erros %}disabled{% endif %}>
+              {{ letra }}
+            </button>
+          {% endfor %}
+        </div>
+        <div class="linha">
+          {% for letra in "ZXCVBNM" %}
+            <button type="submit" name="letra" value="{{ letra }}"
+              {% if letra|lower in jogo.acertos or letra|lower in jogo.erros %}disabled{% endif %}>
+              {{ letra }}
+            </button>
+          {% endfor %}
+        </div>
+      </div>
+    </form>
+  {% endif %}
+
+  {% if status == 'ganhou' %}
+    <div class="mensagem">🎉 Parabéns, você ganhou!</div>
+    <div class="emoji">😄🎈🎊</div>
+  {% elif status == 'perdeu' %}
+    <div class="mensagem">💀 Que pena, você perdeu! A palavra era: <span class="revelada">{{ palavra_original }}</span></div>
+    <div class="emoji emoji-derrota">☠️😭</div>
+  {% endif %}
+
+  {% if status == 'ganhou' or status == 'perdeu' %}
+    <div style="margin-top: 30px; display: flex; justify-content: center; gap: 20px;">
+      <form method="post" action="{% url 'proxima_palavra' tema_id=tema_id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn-jogo">🔁 Próxima Palavra</button>
+      </form>
+
+      <a href="{% url 'selecionar_jogo' %}" class="link-jogo">
+  <span style="margin-right: 6px;">🔙</span> Selecionar Novo Tema
+</a>
+    </div>
+  {% endif %}
+
+  <!-- Sons -->
+  <audio id="somClique" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+  <audio id="somVitoria" src="https://www.soundjay.com/human/applause-01.mp3" preload="auto"></audio>
+  <audio id="somDerrota" src="https://www.soundjay.com/failure/failure-01.mp3" preload="auto"></audio>
+
+  <script>
+    const botoes = document.querySelectorAll("form button");
+    botoes.forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.getElementById("somClique").play();
+      });
+    });
+
+    {% if status == 'ganhou' %}
+      window.addEventListener("load", () => {
+        document.getElementById("somVitoria").play();
+      });
+    {% elif status == 'perdeu' %}
+      window.addEventListener("load", () => {
+        document.getElementById("somDerrota").play();
+      });
+    {% endif %}
+  </script>
+</body>
+</html>

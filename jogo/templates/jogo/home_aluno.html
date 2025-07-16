@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Início - Aluno{% endblock %}
+
+{% block conteudo %}
+  <section>
+    <h2>🎮 Bem-vindo, {{ user.username }}!</h2>
+    <p>Pronto para jogar?</p>
+    <a href="{% url 'selecionar_jogo' %}" class="btn-jogo">Selecionar Tema</a>
+  </section>
+{% endblock %}
