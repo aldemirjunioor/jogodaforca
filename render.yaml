@@ -8,4 +8,4 @@ services:
       - key: DJANGO_SETTINGS_MODULE
         value: forca.settings
       - key: PYTHON_VERSION
-        value: 3.10
+        value: 3.10.13
